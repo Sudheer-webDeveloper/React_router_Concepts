@@ -1,0 +1,354 @@
+step 1) 
+
+const App = () => {
+  return (
+    <>
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />} />
+        </Routes>
+        <Footer />
+      </BrowserRouter>
+    </>
+  );
+};
+
+
+
+step2)
+
+Create a Layout component Layout.jsx and in that import the outlet form react router dom to render all the children .
+
+const App = () => {
+  return (
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route path="/" element={<Home />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </>
+  );
+};
+
+
+step 3)
+
+we have created multiple routes and used the index route as and relative route as well
+
+this is the header component
+
+
+ return (
+   <header>
+    <NavLink to="/" style={{marginRight:"10px", marginLeft:"10px"}}>Home</NavLink>
+    <NavLink to="about"style={{marginRight:"10px", marginLeft:"10px"}}>About</NavLink>
+    <NavLink to="container"style={{marginRight:"10px", marginLeft:"10px"}}>Container</NavLink>
+    <NavLink to="host"style={{marginRight:"10px", marginLeft:"10px"}}>Host</NavLink>
+   </header>
+  )
+
+
+where as . represents the current directory 
+ return (
+   <header>
+    <NavLink to="." style={{marginRight:"10px", marginLeft:"10px"}}>Home</NavLink>
+    <NavLink to="about"style={{marginRight:"10px", marginLeft:"10px"}}>About</NavLink>
+    <NavLink to="container"style={{marginRight:"10px", marginLeft:"10px"}}>Container</NavLink>
+    <NavLink to="host"style={{marginRight:"10px", marginLeft:"10px"}}>Host</NavLink>
+   </header>
+  )
+
+
+const App = () => {
+  return (
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/container" element={<Container />} />
+            <Route path="/host" element={<Host />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </>
+  );
+};
+
+
+
+
+step 4)
+
+Implemented the Route Parmaters based on specific Product id , id user clicked on specific product it takes to there specific item page 
+
+To use routeParamers we have to write the syntax like this /:id id is optional we can write what ever we want.
+
+To access the dynamic route there in our url we have to use useParams hook given by react_router_dom , it gives the access to the dynamic routes which are there in our url 
+
+See the singleProduct component how we used the useParams hook
+
+
+const App = () => {
+  return (
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/container" element={<Container />} />
+            <Route path="/container/:id" element={<SingleProduct />} />
+            <Route path="/host" element={<Host />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </>
+  );
+};
+
+
+step5)
+
+Created the Nested navingation Nav bar for Host page  as HostLayout this is out Hostlayout page initially
+
+ const HostLayout = () => {
+  return (
+    <nav>
+        <NavLink to="/host/dashboard" end className={({isActive})=>(isActive? "main-link" :"normal-link")} >Dashboard</NavLink>
+        <NavLink to="/host/review" end className={({isActive})=>(isActive? "main-link" :"normal-link")} >Reviews</NavLink>
+        <NavLink to="/host/income" end className={({isActive})=>(isActive? "main-link" :"normal-link")} >Income</NavLink>
+    </nav>
+  )
+}
+
+  later by using relative routes the page changed to like this 
+
+  const HostLayout = () => {
+  return (
+    <nav>
+        <NavLink to="." end className={({isActive})=>(isActive? "main-link" :"normal-link")} >Dashboard</NavLink>
+        <NavLink to="review" end className={({isActive})=>(isActive? "main-link" :"normal-link")} >Reviews</NavLink>
+        <NavLink to="income" end className={({isActive})=>(isActive? "main-link" :"normal-link")} >Income</NavLink>
+    </nav>
+  )
+}
+
+
+This is out app.jsx file now 
+
+const App = () => {
+  return (
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/container" element={<Container />} />
+            <Route path="/container/:id" element={<SingleProduct />} />
+            <Route path="/host" element={<HostLayout />}>
+              <Route index element={<Dashboard />} />
+              <Route path="/host/review" element={<Reviews />} />
+              <Route path="/host/income" element={<Income />} />
+            </Route>
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </>
+  );
+};
+
+
+later the app.jsx file will be changed to like this because the parent pathof Layout is / so no need to use everytime / slash to the child Routes
+
+Similarly go's to /host we no need to /host every time for /host/reviews and /host/income just use reviews and income because first parent Route path / and the second Parent path of Hostlayout is /host so no need to mention every time like that 
+
+
+const App = () => {
+  return (
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="about" element={<About />} />
+            <Route path="container" element={<Container />} />
+            <Route path="container/:id" element={<SingleProduct />} />
+            <Route path="host" element={<HostLayout />}>
+              <Route index element={<Dashboard />} />
+              <Route path="review" element={<Reviews />} />
+              <Route path="income" element={<Income />} />
+            </Route>
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </>
+  );
+};
+
+
+
+
+
+
+step6) 
+
+Added outlet route to the HostLayout router page to render the children routes
+
+
+const HostLayout = () => {
+  return (
+    <nav>
+        <NavLink to="." end className={({isActive})=>(isActive? "main-link" :"normal-link")} >Dashboard</NavLink>
+        <NavLink to="review" end className={({isActive})=>(isActive? "main-link" :"normal-link")} >Reviews</NavLink>
+        <NavLink to="income" end className={({isActive})=>(isActive? "main-link" :"normal-link")} >Income</NavLink>
+
+        <Outlet />
+    </nav>
+  )
+}
+
+
+
+step 7 ) Now added new Child to the Hostlayout that route name is Products it renders the component Products.jsx  see below like this
+
+
+const HostLayout = () => {
+  return (
+    <nav>
+        <NavLink to="." end className={({isActive})=>(isActive? "main-link" :"normal-link")} >Dashboard</NavLink>
+        <NavLink to="review" end className={({isActive})=>(isActive? "main-link" :"normal-link")} >Reviews</NavLink>
+        <NavLink to="income" end className={({isActive})=>(isActive? "main-link" :"normal-link")} >Income</NavLink>
+
+
+        <NavLink to="products" end className={({isActive})=>(isActive? "main-link" :"normal-link")} >Products</NavLink>
+
+
+        <Outlet />
+    </nav>
+  )
+}
+
+The prosucts page is also renders the products which are there in the container page , we created this page for to implement another navigation bar nested navigation technic 
+
+
+
+
+
+step 8)
+
+Later we created again the route params page which will render the single product in that page 
+ NewSingleProduct page
+
+const App = () => {
+  return (
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="about" element={<About />} />
+            <Route path="container" element={<Container />} />
+            <Route path="container/:id" element={<SingleProduct />} />
+            <Route path="host" element={<HostLayout />}>
+              <Route index element={<Dashboard />} />
+              <Route path="review" element={<Reviews />} />
+              <Route path="income" element={<Income />} />
+              <Route path="products" element={<Products />} />
+              
+              <Route path="products/:id" element={<NewSingleProduct />} />
+
+
+            </Route>
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </>
+  );
+};
+
+
+how we use the route parameters , dynamic parameters there in the url in singlProduct page same we have to do in the NewSingleproduct page 
+
+See the Products component page and NewSingleProduct component for best understanding .
+
+
+
+
+
+step 9)
+
+In the NewSingleProduct page we use route structure like this which will take us agian product page 
+
+  <NavLink to=".." relative="path">
+        Back to host page
+</NavLink>
+      {/* but this takes to the one level up but based on path  here it goes to /products route path// they will one level up in our routing stucture */}
+
+
+      If we dont use relative = "path" then this  Back to host page then this will take to parent directory dashboard page or /host page
+
+
+
+
+      step 10)
+
+    Now making the NewSingleProduct as a parent route to detail  , pricing, photos routes like this see below
+
+
+     <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="about" element={<About />} />
+            <Route path="container" element={<Container />} />
+            <Route path="container/:id" element={<SingleProduct />} />
+            
+            <Route path="host" element={<HostLayout />}>
+
+              <Route index element={<Dashboard />} />
+              <Route path="review" element={<Reviews />} />
+              <Route path="income" element={<Income />} />
+              <Route path="products" element={<Products />} />
+
+              <Route path="products/:id" element={<NewSingleProduct />}>
+
+                <Route path="detail" element={<Detail />}/>
+                <Route path="pricing" element={<Pricing />}/>
+                <Route path="photos" element={<Photos />}/>
+
+              </Route>
+
+            </Route>
+
+
+          </Route>
+        </Routes>
+      </BrowserRouter>
+
+
+      See the NewSingleProduct component for best understanding there we use another navigation bar 
+
+
+
+      step 11 )
+
+
+      To use the data what ever the data there in the parent(/products/:id) route of the detail, pricing, photos , we neeed to again fetch data and use it in there componenets , we have a higher orede componnet give by react router dom called useOutletContext which which sends the data to all the child routes which are there in the parent route 
+
+
+      To send the data to all the routes we have to do like this
+
+            <Outlet context={{data}} />   for passing that we use context ={value}
+
+
+    By passing like this Object   <Outlet context={{data}} /> Object : { data: {…} } this will store in the form of data property of an object like this {data:data} // when we have to send multiple values then this will useful follow this inside the child route we can destrture and get the property what we want
+
+
+    Inside the child componenets we have to import useOutletContext hook form react_router_dom which give the access to use that data in child routes
